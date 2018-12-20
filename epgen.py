@@ -7,6 +7,7 @@ class EpisodeRandomizer:
     def __init__(self, showname=None, season=None, episode=None):
         """
         Contructor
+        instantiates a randomizer instance
         ---
         showname -> str: the approximate name of the show
         season -> int: the specific season to limit to (default: None)
@@ -23,6 +24,11 @@ class EpisodeRandomizer:
             raise SystemExit
 
     def get_numseasons(self):
+        """
+        get_numseasons
+        return the number of seasons a TV show has
+        ---
+        """
         self.numseasons = 0
         for season in self.show:
             if season:
@@ -30,12 +36,22 @@ class EpisodeRandomizer:
         return self.numseasons
 
     def get_numepisodes(self, season):
+        """
+        get_numepisodes
+        return the number of episodes in a particular season
+        ---
+        """
         numepisodes = 0
         for episode in self.show[season]:
             numepisodes += 1
         return numepisodes
 
     def get_season(self, exclude=None):
+        """
+        get_season
+        randomly pick a season or return the one the user asked for
+        ---
+        """
         if exclude is not None:
             raise NotImplementedError
         if self.season is not None: # user requested a particular season
@@ -45,6 +61,12 @@ class EpisodeRandomizer:
         return random.randint(1, self.numseasons)
 
     def get_episode(self, season, exclude=None):
+        """
+        get_episode
+        randomly pick an episode from a particular season or return the one
+        the user specifically requested
+        ---
+        """
         if exclude is not None:
             raise NotImplementedError
         if self.episode is not None: # user requested a particular episode num
@@ -52,11 +74,22 @@ class EpisodeRandomizer:
         return random.randint(1, self.get_numepisodes(season))
 
     def get_random_ep(self): # the star method of the class
+        """
+        get_random_ep
+        knowing the number of seasons and number of episodes, pick a random
+        from both and return the pair
+        ---
+        """
         season = self.get_season()
         episode = self.get_episode(season)
         return season, episode
 
     def print_random_episode(self): # pretty-print the output of the randomizer
+        """
+        print_random_episode
+        just a helper to nicely output result of randomization
+        ---
+        """
         result = self.get_random_ep()
         # print("The Random Generator says:")
         print("Season {:d} Episode {:d} of {}".format(*result,
