@@ -1,6 +1,9 @@
 import random # to randomize the episode
 import tvdb_api # to retrieve the name and the number of episodes of a show
 import sys # to log error to stderr
+import argparse
+import socket
+from requests.exceptions import ConnectionError
 
 
 class EpisodeRandomizer:
@@ -14,6 +17,7 @@ class EpisodeRandomizer:
         episode -> int: a specific episode (from all seasons unless specified)
                         to limit randomization to (default: None)
         """
+        print(showname, season, episode)
         self.season, self.episode = season, episode
         self.tvdb = tvdb_api.Tvdb()
         try:
@@ -21,6 +25,9 @@ class EpisodeRandomizer:
             self.show = self.tvdb[showname]
         except tvdb_api.tvdb_shownotfound as error:
             print("ERR: no such TV show: {}".format(showname), file=sys.stderr)
+            raise SystemExit
+        except ConnectionError as error:
+            print("ERR: please check your network connection", file=sys.stderr)
             raise SystemExit
 
     def get_numseasons(self):
@@ -97,8 +104,22 @@ class EpisodeRandomizer:
         return result # also return it, just in case it's needed for sth else
 
 if __name__ == '__main__': # run the print method only if we're main
-    if len(sys.argv) == 1:
-        print("Usage: python epgen.py [name_of_show]")
-        raise SystemExit
-    randomizer = EpisodeRandomizer(" ".join(sys.argv[1:]))
+    parser = argparse.ArgumentParser()
+    parser.add_argument('name', nargs='+', type=str, help='The name of the '
+                                                          'show. Example: '
+                                                          'python3 epgen.py '
+                                                          '"the office us"',
+                        metavar='showname')
+    parser.add_argument('-s', '--season', nargs='+', type=int,
+                        help='Select from only these specific seasons. '
+                             'Example usage: -s 1 4 5 8',
+                        default=None)
+    parser.add_argument('-e', '--episode', nargs='+', type=int,
+                        help='Select from only these numbered episodes. '
+                             'Example usage: -e 17 18 19 20 21',
+                        default=None)
+    config = parser.parse_args()
+    print(config)
+    randomizer = EpisodeRandomizer(' '.join(config.name), season=config.season,
+                                   episode=config.episode)
     random = randomizer.print_random_episode()
