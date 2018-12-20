@@ -25,8 +25,8 @@ coming soon
 - Choose any arbitrary episode
 
 
-    $   python3 epgen.py the office us
-    >   Season 9 Episode 15 of The Office (US)
+    $ python3 epgen.py the office us
+[example output] _Season 9 Episode 15 of The Office (US)_
 
 ### Future features and bugfixes
 - Pass a particular season as commandline argument to select episodes from
