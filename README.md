@@ -7,16 +7,16 @@
 ### Installation
 
 #### from source:
-- Install the prerequisite
+- Install the requisite package(s)
 
 
-    python3 -m pip install --upgrade [--user] tvdb_api
+    $ python3 -m pip install --upgrade [--user] tvdb_api argparse requests
 
-- Get `epgen.py`
+- Obtain `epgen.py`
 
 
-    git clone [repository URL]
-
+    $ git clone [the/URL/of/this/repository.git]
+    $ cd epgen
 
 #### pyPI:
 coming soon
