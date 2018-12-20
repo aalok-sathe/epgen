@@ -2,7 +2,6 @@ import random # to randomize the episode
 import tvdb_api # to retrieve the name and the number of episodes of a show
 import sys # to log error to stderr
 import argparse
-import socket
 from requests.exceptions import ConnectionError
 
 
