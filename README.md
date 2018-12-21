@@ -7,16 +7,15 @@
 ### Installation
 
 #### from source:
-- Install the requisite package(s)
+Install the requisite package(s)
 
 
-    $ python3 -m pip install --upgrade [--user] tvdb_api argparse requests
+    python3 -m pip install --upgrade [--user] tvdb_api argparse requests
 
-- Obtain `epgen.py`
+Obtain `epgen.py`
 
-
-    $ git clone [the/URL/of/this/repository.git]
-    $ cd epgen
+    git clone [the/URL/of/this/repository.git]
+    cd epgen
 
 #### pyPI:
 coming soon
@@ -36,16 +35,23 @@ integers representing particular episode numbers to randomly
 choose from
     * example: `python3 epgen.py -s 9 -e 16 17 18 19`
 - `-h`, `--help` (optional): show a usage help message
-- `-i`, `--include-extras` (optional)
+- `-i`, `--include-extras` (optional): whether to include a season 0 in the random selection, i.e., most commonly, the season of bloopers or extras footage
+- `-d`, `--description` (optional): display a brief summary of the episode that was chosen
 
 Example usage:
 
     $   python3 epgen.py the office us
     ::  Season 8 Episode 2 of The Office (US) : 'The Incentive'
 
-    $   python3 epgen.py the good place -s 1 2 -e 2 3 4 -i
+    $   python3 epgen.py the good place -s 1 2 -e 2 3 4
     ::  Season 1 Episode 2 of The Good Place : 'Flying'
 
+    $   python3 epgen.py the office us -i
+    ::  Season 0 Episode 14 of The Office (US) : 'The Office Retrospective'
+
+    $   python3 epgen.py sacred games --desc
+    ::  Season 1 Episode 2 of Sacred Games : 'Halahala'
+    ::  News of Ganesh Gaitonde creates a stir among Mumbai's VIPs, from politicians to film stars. Removed from the case, Sartaj begins his own investigation.
 
 ### Future features and bugfixes
 - [x] Pass list of seasons as argument to select episodes from
