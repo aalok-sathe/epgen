@@ -23,31 +23,33 @@ coming soon
 
 ### Usage (example)
 
-    $ python3 epgen.py name_of_show [-s SEASONS] [-e EPISODES] [-h]
+    $ python3 epgen.py name_of_show [-s SEASONS] [-e EPISODES] [-h] [-i]
 
 - `name_of_show` (required): the approximate name of show to
 look up in the database.
     * example: `python3 epgen.py`
-- `-s SEASONS` (optional): a whitespace-separated list of season
+- `-s, --seasons SEASONS` (optional): a whitespace-separated list of season
 numbers to randomly choose from
     * example: `python3 epgen.py -s 4 8 9`
-- `-e EPISODES` (optional): a whitespace-separated list of
+- `-e, --episodes EPISODES` (optional): a whitespace-separated list of
 integers representing particular episode numbers to randomly
 choose from
     * example: `python3 epgen.py -s 9 -e 16 17 18 19`
-- `-h` (optional): show a usage help message
+- `-h`, `--help` (optional): show a usage help message
+- `-i`, `--include-extras` (optional)
 
-So a command like this would choose any arbitrary episode from
-all episodes:
+Example usage:
 
-    $ python3 epgen.py the office us
-    [example output] Season 9 Episode 15 of The Office (US)
+    $   python3 epgen.py the office us
+    ::  Season 8 Episode 2 of The Office (US) : 'The Incentive'
 
+    $   python3 epgen.py the good place -s 1 2 -e 2 3 4 -i
+    ::  Season 1 Episode 2 of The Good Place : 'Flying'
 
 
 ### Future features and bugfixes
-- Pass a particular season as commandline argument to select episodes from
-- Weigh by the number of episodes a season has to make unbiased choice
+- [x] Pass list of seasons as argument to select episodes from
+- [x] Weigh random choice by the number of episodes in each season
 - Create web interface
 - Support to install script in system path so you can call `epgen` from anywhere
 - [moonshot] Exclude episodes with major plot points
