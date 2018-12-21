@@ -6,7 +6,7 @@ from requests.exceptions import ConnectionError
 
 
 class EpisodeRandomizer:
-    def __init__(self, showname=None, season=None, episode=None):
+    def __init__(self, showname=None):
         """
         Contructor
         instantiates a randomizer instance
@@ -16,20 +16,22 @@ class EpisodeRandomizer:
         episode -> int: a specific episode (from all seasons unless specified)
                         to limit randomization to (default: None)
         """
-        print(showname, season, episode)
-        self.season, self.episode = season, episode
+        # print(showname)
         self.tvdb = tvdb_api.Tvdb()
         try:
             # print("INFO: looking for show information", file=sys.stderr)
             self.show = self.tvdb[showname]
         except tvdb_api.tvdb_shownotfound as error:
-            print("ERR: no such TV show: {}".format(showname), file=sys.stderr)
+            print("ERR: '{}' not found".format(showname), file=sys.stderr)
             raise SystemExit
         except ConnectionError as error:
             print("ERR: please check your network connection", file=sys.stderr)
             raise SystemExit
+        self.seasons = dict()
+        for season in self.show:
+            self.seasons[season] = self.show[season]
 
-    def get_numseasons(self):
+    def get_numseasons(self, extras=None):
         """
         get_numseasons
         return the number of seasons a TV show has
@@ -37,8 +39,8 @@ class EpisodeRandomizer:
         """
         self.numseasons = 0
         for season in self.show:
-            if season:
-                self.numseasons += 1
+            if season or extras is not None:
+                self.seasons[season] = self.show[season]
         return self.numseasons
 
     def get_numepisodes(self, season):
@@ -47,59 +49,72 @@ class EpisodeRandomizer:
         return the number of episodes in a particular season
         ---
         """
-        numepisodes = 0
-        for episode in self.show[season]:
-            numepisodes += 1
-        return numepisodes
+        return len(self.seasons[season])
 
-    def get_season(self, exclude=None):
+    def get_season(self, extras=None):
         """
         get_season
         randomly pick a season or return the one the user asked for
         ---
         """
-        if exclude is not None:
-            raise NotImplementedError
+        # raise DeprecationWarning
         if self.season is not None: # user requested a particular season
             return self.season
         if not hasattr(self, 'numseasons'): # run only once
             self.numseasons = self.get_numseasons()
         return random.randint(1, self.numseasons)
 
-    def get_episode(self, season, exclude=None):
+    def get_episode(self, season, episode=None):
         """
         get_episode
         randomly pick an episode from a particular season or return the one
         the user specifically requested
         ---
         """
+        # raise DeprecationWarning
         if exclude is not None:
             raise NotImplementedError
-        if self.episode is not None: # user requested a particular episode num
-            return self.episode
+        if episode is not None: # user requested a particular episode num
+            return episode
         return random.randint(1, self.get_numepisodes(season))
 
-    def get_random_ep(self): # the star method of the class
+    def get_random_ep(self, season=None, episode=None, extras=None):
         """
         get_random_ep
         knowing the number of seasons and number of episodes, pick a random
         from both and return the pair
         ---
         """
-        season = self.get_season()
-        episode = self.get_episode(season)
-        return season, episode
+        options = []
+        for s in self.seasons:
+            for e in self.seasons[s]:
+                if extras is not None or s != 0:
+                    if season is None or int(s) in season:
+                        if episode is None or int(e) in episode:
+                            options.append((s,e))
+                # print("{:d}\t{:d}".format(s,e))
+        # print(options)
+        choice = random.randint(0, len(options)-1) # get true unbiased random
+                                                   # otherwise seasons with
+                                                   # more episodes get more
+                                                   # representation
+        return options[choice]
+        # season = self.get_season(extras=extras)
+        # episode = self.get_episode(season)
+        # return season, episode
 
-    def print_random_episode(self): # pretty-print the output of the randomizer
+    def print_random_episode(self, season=None, episode=None, extras=None):
         """
         print_random_episode
         just a helper to nicely output result of randomization
         ---
         """
-        result = self.get_random_ep()
+        result = self.get_random_ep(season=season, episode=episode,
+                                    extras=extras)
         # print("The Random Generator says:")
         print("Season {:d} Episode {:d} of {}".format(*result,
-                                                      self.show['seriesName']))
+                                                      self.show['seriesName']),
+              ": '{}'".format(self.show[result[0]][result[1]]['episodeName']))
         return result # also return it, just in case it's needed for sth else
 
 if __name__ == '__main__': # run the print method only if we're main
@@ -117,8 +132,13 @@ if __name__ == '__main__': # run the print method only if we're main
                         help='Select from only these numbered episodes. '
                              'Example usage: -e 17 18 19 20 21',
                         default=None)
+    parser.add_argument('-i', '--include-extras', nargs='*',
+                        help='If passed, allows choosing season 0 which, '
+                             'for most shows, contains bloopers and such.',
+                        default=None)
     config = parser.parse_args()
-    print(config)
-    randomizer = EpisodeRandomizer(' '.join(config.name), season=config.season,
-                                   episode=config.episode)
-    random = randomizer.print_random_episode()
+    # print(config)
+    randomizer = EpisodeRandomizer(' '.join(config.name))
+    random = randomizer.print_random_episode(season=config.season,
+                                             episode=config.episode,
+                                             extras=config.include_extras)
