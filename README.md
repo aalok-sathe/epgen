@@ -33,7 +33,7 @@ numbers to randomly choose from
 - `-e, --episodes EPISODES` (optional): a whitespace-separated list of
 integers representing particular episode numbers to randomly
 choose from
-    * example: `python3 epgen.py [...] -s 9 -e 16 17 18 19`
+    * example: `python3 epgen.py game of thrones -e 9`
 - `-h`, `--help` (optional): show a usage help message
 - `-i`, `--include-extras` (optional): whether to include a season 0 in the random selection, i.e., most commonly, the season of bloopers or extras footage
 - `-d`, `--description` (optional): display a brief summary of the episode that was chosen
@@ -52,6 +52,9 @@ Examples of usage:
     $   python3 epgen.py sacred games --desc
     ::  Season 1 Episode 2 of Sacred Games : 'Halahala'
     ::  News of Ganesh Gaitonde creates a stir among Mumbai's VIPs, from politicians to film stars. Removed from the case, Sartaj begins his own investigation.
+
+    $   python3 epgen.py game of thrones -e 9
+    ::  Season 6 Episode 9 of Game of Thrones : 'Battle of the Bastards'
 
 ### Future features and bugfixes
 - [x] Pass list of seasons as argument to select episodes from
