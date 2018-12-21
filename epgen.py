@@ -37,6 +37,7 @@ class EpisodeRandomizer:
         return the number of seasons a TV show has
         ---
         """
+        raise DeprecationWarning
         self.numseasons = 0
         for season in self.show:
             if season or extras is not None:
@@ -49,6 +50,7 @@ class EpisodeRandomizer:
         return the number of episodes in a particular season
         ---
         """
+        raise DeprecationWarning
         return len(self.seasons[season])
 
     def get_season(self, extras=None):
@@ -57,7 +59,7 @@ class EpisodeRandomizer:
         randomly pick a season or return the one the user asked for
         ---
         """
-        # raise DeprecationWarning
+        raise DeprecationWarning
         if self.season is not None: # user requested a particular season
             return self.season
         if not hasattr(self, 'numseasons'): # run only once
@@ -71,7 +73,7 @@ class EpisodeRandomizer:
         the user specifically requested
         ---
         """
-        # raise DeprecationWarning
+        raise DeprecationWarning
         if exclude is not None:
             raise NotImplementedError
         if episode is not None: # user requested a particular episode num
