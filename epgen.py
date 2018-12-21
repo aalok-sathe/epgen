@@ -121,7 +121,7 @@ class EpisodeRandomizer:
               ": '{}'".format(epobj['episodeName']))
         if desc is not None:
             print(epobj['overview'])
-        return result # also return it, just in case it's needed for sth else
+        return epobj # also return it, just in case it's needed for sth else
 
 if __name__ == '__main__': # run the print method only if we're main
     parser = argparse.ArgumentParser()
@@ -148,7 +148,7 @@ if __name__ == '__main__': # run the print method only if we're main
     config = parser.parse_args()
     # print(config)
     randomizer = EpisodeRandomizer(' '.join(config.name))
-    random = randomizer.print_random_episode(season=config.season,
+    randep = randomizer.print_random_episode(season=config.season,
                                              episode=config.episode,
                                              extras=config.include_extras,
                                              desc=config.description)
