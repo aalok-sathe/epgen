@@ -105,7 +105,8 @@ class EpisodeRandomizer:
         # episode = self.get_episode(season)
         # return season, episode
 
-    def print_random_episode(self, season=None, episode=None, extras=None):
+    def print_random_episode(self, season=None, episode=None, extras=None,
+                             desc=None):
         """
         print_random_episode
         just a helper to nicely output result of randomization
@@ -113,10 +114,13 @@ class EpisodeRandomizer:
         """
         result = self.get_random_ep(season=season, episode=episode,
                                     extras=extras)
+        epobj = self.show[result[0]][result[1]]
         # print("The Random Generator says:")
         print("Season {:d} Episode {:d} of {}".format(*result,
                                                       self.show['seriesName']),
-              ": '{}'".format(self.show[result[0]][result[1]]['episodeName']))
+              ": '{}'".format(epobj['episodeName']))
+        if desc is not None:
+            print(epobj['overview'])
         return result # also return it, just in case it's needed for sth else
 
 if __name__ == '__main__': # run the print method only if we're main
@@ -138,9 +142,14 @@ if __name__ == '__main__': # run the print method only if we're main
                         help='If passed, allows choosing season 0 which, '
                              'for most shows, contains bloopers and such.',
                         default=None)
+    parser.add_argument('-d', '--description', nargs='*',
+                        help='If passed, shows episode summary',
+                        default=None)
     config = parser.parse_args()
     # print(config)
     randomizer = EpisodeRandomizer(' '.join(config.name))
     random = randomizer.print_random_episode(season=config.season,
                                              episode=config.episode,
-                                             extras=config.include_extras)
+                                             extras=config.include_extras,
+                                             desc=config.description)
+                                             
