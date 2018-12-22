@@ -126,8 +126,9 @@ class EpisodeRandomizer:
                                             extras=[])
             except ValueError:
                 sys.stdout.write(BOLD+RED)
-                print("ERR: ", file=sys.stderr)
+                print("ERR: bad season or episode restriction", file=sys.stderr)
                 sys.stdout.write(RESET)
+                raise SystemExit
         epobj = self.show[result[0]][result[1]]
         # print("The Random Generator says:")
         print("Season {:d} Episode {:d} of {}".format(*result,
