@@ -1,8 +1,11 @@
+#!/usr/bin/env python3
+
 import random # to randomize the episode
 import tvdb_api # to retrieve the name and the number of episodes of a show
 import sys # to log error to stderr
 import argparse
 from requests.exceptions import ConnectionError
+from colors import *
 
 
 class EpisodeRandomizer:
@@ -25,6 +28,7 @@ class EpisodeRandomizer:
             print("ERR: '{}' not found".format(showname), file=sys.stderr)
             raise SystemExit
         except ConnectionError as error:
+            sys.stdout.write(BOLD+RED)
             print("ERR: please check your network connection", file=sys.stderr)
             raise SystemExit
         self.seasons = dict()
@@ -152,4 +156,3 @@ if __name__ == '__main__': # run the print method only if we're main
                                              episode=config.episode,
                                              extras=config.include_extras,
                                              desc=config.description)
-                                             
