@@ -1,6 +1,13 @@
-# epgen.py
+# epgen
 
 [![made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
+
+[![GitHub contributors](https://img.shields.io/github/contributors/aalok-sathe/epgen.svg)](https://GitHub.com/aalok-sathe/epgen/graphs/contributors/)
+[![Only 32 Kb](https://badge-size.herokuapp.com/aalok-sathe/epgen/master/epgen.py)](https://github.com/aalok-sathe/epgen/blob/master/epgen.py)
+[![HitCount](http://hits.dwyl.io/epgen.py/badges.svg)](https://github.com/aalok-sathe/epgen)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![Open Source Love png2](https://badges.frapsoft.com/os/v2/open-source.png?v=103)](https://github.com/ellerbrock/open-source-badges/)
+[![Ask Me Anything !](https://img.shields.io/badge/ask%20me-anything-1abc9c.svg)](https://GitHub.com/aalok-sathe/epgen)
 
 ### A random episode generator for your favorite binge watching show
 
