@@ -79,8 +79,11 @@ Examples of usage:
     ::  Season 6 Episode 9 of Game of Thrones : 'Battle of the Bastards'
 
 ### Future features and bugfixes
-- [x] Pass list of seasons as argument to select episodes from
-- [x] Weigh random choice by the number of episodes in each season
+- [ ] Upload to PyPI to allow `pip` installation
 - [ ] Create web interface
 - [ ] Support to install script in system path so you can call `epgen` from anywhere
 - [ ] [moonshot] Exclude episodes with major plot points
+- [ ] [moonshot] Add support for optional `cowsay` output
+- [x] Pass list of seasons as argument to select episodes from
+- [x] Weigh random choice by the number of episodes in each season
+    - [x] Allow option to unweigh
