@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 import random # to randomize the episode
 import tvdb_api # to retrieve the name and the number of episodes of a show
 import sys # to log error to stderr
@@ -143,14 +144,12 @@ class EpisodeRandomizer:
                 raise SystemExit
         epobj = self.show[result[0]][result[1]]
         # print("The Random Generator says:")
-        print()
         print(REVERSE +
               " Season {:d} Episode {:d} {} "
               "of {}{}".format(*result, RESET, "", self.show['seriesName']),
               ": '{}'".format(epobj['episodeName']), RESET)
         if desc is not None:
             print("Synopsis:", epobj['overview'])
-        print()
         return epobj # also return it, just in case it's needed for sth else
 
 
