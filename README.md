@@ -40,15 +40,15 @@ Obtain `epgen.py`
 
 ### Usage
 
-    $ python3 epgen.py name_of_show [-s SEASONS] [-e EPISODES] [-h] [-i] [-d]
+    $ python3 epgen.py name_of_show [-s SEASONS] [-e EPISODES] [-h] [-i] [-d] [-u]
 
 - `name_of_show` (required): the approximate name of show to
 look up in the database.
     * example: `python3 epgen.py [...]`
-- `-s, --seasons SEASONS` (optional): a whitespace-separated list of season
+- `-s`, `--seasons` `SEASONS` (optional): a whitespace-separated list of season
 numbers to randomly choose from
     * example: `python3 epgen.py [...] -s 4 8 9`
-- `-e, --episodes EPISODES` (optional): a whitespace-separated list of
+- `-e`, `--episodes` `EPISODES` (optional): a whitespace-separated list of
 integers representing particular episode numbers to randomly
 choose from
     * example: `python3 epgen.py game of thrones -e 9 10`
