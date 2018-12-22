@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 import random # to randomize the episode
 import tvdb_api # to retrieve the name and the number of episodes of a show
 import sys # to log error to stderr
@@ -70,12 +69,10 @@ class EpisodeRandomizer:
         randomly pick a season or return the one the user asked for
         ---
         """
-        raise DeprecationWarning
-        if self.season is not None: # user requested a particular season
-            return self.season
-        if not hasattr(self, 'numseasons'): # run only once
-            self.numseasons = self.get_numseasons()
-        return random.randint(1, self.numseasons)
+        # raise DeprecationWarning
+        if season is not None:
+            return season[random.randint(0, len(season)-1)]
+        return random.randint(1, self.get_numseasons())
 
     def get_episode(self, season, episode=None):
         """
@@ -91,7 +88,8 @@ class EpisodeRandomizer:
             return episode
         return random.randint(1, self.get_numepisodes(season))
 
-    def get_random_ep(self, season=None, episode=None, extras=None):
+    def get_random_ep(self, season=None, episode=None, extras=None,
+                      unweigh=None):
         """
         get_random_ep
         knowing the number of seasons and number of episodes, pick a random
@@ -99,12 +97,15 @@ class EpisodeRandomizer:
         ---
         """
         options = []
+
         for s in self.seasons:
+            if unweigh is not None: s = get_season(season=season, extras=extras)
             for e in self.seasons[s]:
                 if extras is not None or s != 0:
                     if season is None or int(s) in season:
                         if episode is None or int(e) in episode:
                             options.append((s,e))
+            if unweigh is not None: break
                 # print("{:d}\t{:d}".format(s,e))
         # print(options)
         choice = random.randint(0, len(options)-1) # get true unbiased random
@@ -117,10 +118,13 @@ class EpisodeRandomizer:
         # return season, episode
 
     def print_random_episode(self, season=None, episode=None, extras=None,
-                             desc=None):
+                             desc=None, unweigh=None):
         """
         print_random_episode
         just a helper to nicely output result of randomization
+
+        handles ValueError in case randomizer cannot produce a result based
+        on provided constraints
         ---
         """
         try:
@@ -128,21 +132,27 @@ class EpisodeRandomizer:
                                         extras=extras)
         except ValueError:
             try:
+                if season is None or 0 not in season: raise ValueError
                 result = self.get_random_ep(season=season, episode=episode,
                                             extras=[])
             except ValueError:
-                sys.stdout.write(BOLD+RED)
-                print("ERR: bad season or episode restriction", file=sys.stderr)
-                sys.stdout.write(RESET)
+                sys.stderr.write(BOLD+RED)
+                print("ERR: bad season or episode restriction",
+                      file=sys.stderr)
+                sys.stderr.write(RESET)
                 raise SystemExit
         epobj = self.show[result[0]][result[1]]
         # print("The Random Generator says:")
-        print("Season {:d} Episode {:d} of {}".format(*result,
-                                                      self.show['seriesName']),
-              ": '{}'".format(epobj['episodeName']))
+        print()
+        print(REVERSE +
+              " Season {:d} Episode {:d} {} "
+              "of {}{}".format(*result, RESET, "", self.show['seriesName']),
+              ": '{}'".format(epobj['episodeName']), RESET)
         if desc is not None:
-            print(epobj['overview'])
+            print("Synopsis:", epobj['overview'])
+        print()
         return epobj # also return it, just in case it's needed for sth else
+
 
 if __name__ == '__main__': # run the print method only if we're main
     parser = argparse.ArgumentParser()
@@ -154,22 +164,31 @@ if __name__ == '__main__': # run the print method only if we're main
     parser.add_argument('-s', '--season', nargs='+', type=int,
                         help='Select from only these specific seasons. '
                              'Example usage: -s 1 4 5 8',
-                        default=None)
+                        default=None, metavar='season_nums')
     parser.add_argument('-e', '--episode', nargs='+', type=int,
                         help='Select from only these numbered episodes. '
                              'Example usage: -e 17 18 19 20 21',
-                        default=None)
+                        default=None, metavar='episode_nums')
     parser.add_argument('-i', '--include-extras', nargs='*',
                         help='If passed, allows choosing season 0 which, '
                              'for most shows, contains bloopers and such.',
-                        default=None)
+                        default=None, metavar='include_extras?')
     parser.add_argument('-d', '--description', nargs='*',
                         help='If passed, shows episode summary',
-                        default=None)
+                        default=None, metavar='show_description?')
+    parser.add_argument('-u', '--unweighted', nargs='*',
+                        help='If passed, picks season first, then episode. '
+                             'I.e., random choice will not be weighted by '
+                             'the number of episodes per season.',
+                        default=None, metavar='unweighted_choice?')
     config = parser.parse_args()
     # print(config)
     randomizer = EpisodeRandomizer(' '.join(config.name))
     randep = randomizer.print_random_episode(season=config.season,
                                              episode=config.episode,
                                              extras=config.include_extras,
-                                             desc=config.description)
+                                             desc=config.description,
+                                             unweigh=config.unweighted)
+
+    sys.stderr.write(RESET) # reset any forgotton terminal formatting
+    sys.stdout.write(RESET) # that may have been used
