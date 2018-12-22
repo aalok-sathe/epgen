@@ -51,10 +51,14 @@ numbers to randomly choose from
 - `-e, --episodes EPISODES` (optional): a whitespace-separated list of
 integers representing particular episode numbers to randomly
 choose from
-    * example: `python3 epgen.py game of thrones -e 9`
+    * example: `python3 epgen.py game of thrones -e 9 10`
 - `-h`, `--help` (optional): show a usage help message
-- `-i`, `--include-extras` (optional): whether to include a season 0 in the random selection, i.e., most commonly, the season of bloopers or extras footage
-- `-d`, `--description` (optional): display a brief summary of the episode that was chosen
+- `-i`, `--include-extras` (optional): whether to include a season 0 in the
+random selection, i.e., most commonly, the season of bloopers or extras footage
+- `-d`, `--description` (optional): display a brief summary of the episode that
+was chosen
+- `u`, `--unweighted-choice` (optional): randomizes season irrespective of how
+many episodes each season has
 
 Examples of usage:
 
