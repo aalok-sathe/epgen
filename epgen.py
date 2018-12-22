@@ -48,12 +48,12 @@ class EpisodeRandomizer:
         return the number of seasons a TV show has
         ---
         """
-        raise DeprecationWarning
-        self.numseasons = 0
+        # raise DeprecationWarning
+        numseasons = 0
         for season in self.show:
             if season or extras is not None:
-                self.seasons[season] = self.show[season]
-        return self.numseasons
+                numseasons += 1
+        return numseasons
 
     def get_numepisodes(self, season):
         """
