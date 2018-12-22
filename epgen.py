@@ -7,6 +7,7 @@ import argparse
 from requests.exceptions import ConnectionError
 from colors import *
 
+# import cowsay
 
 class EpisodeRandomizer:
     def __init__(self, showname=None):
@@ -22,15 +23,20 @@ class EpisodeRandomizer:
         # print(showname)
         self.tvdb = tvdb_api.Tvdb()
         try:
+            # sys.stderr.write(GREEN)
             # print("INFO: looking for show information", file=sys.stderr)
+            # sys.stderr.write(RESET)
             self.show = self.tvdb[showname]
         except tvdb_api.tvdb_shownotfound as error:
-            print("ERR: '{}' not found".format(showname), file=sys.stderr)
+            sys.stderr.write(BOLD+RED)
+            print("ERR: '{}' not found".format(showname),
+                  file=sys.stderr)
+            sys.stderr.write(RESET)
             raise SystemExit
         except ConnectionError as error:
-            sys.stdout.write(BOLD+RED)
-            print("ERR: please check your network connection", file=sys.stderr)
-            sys.stdout.write(RESET)
+            sys.stderr.write(BOLD+RED)
+            print("ERR: please check your network", file=sys.stderr)
+            sys.stderr.write(RESET)
             raise SystemExit
         self.seasons = dict()
         for season in self.show:
