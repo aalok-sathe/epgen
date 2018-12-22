@@ -30,6 +30,7 @@ class EpisodeRandomizer:
         except ConnectionError as error:
             sys.stdout.write(BOLD+RED)
             print("ERR: please check your network connection", file=sys.stderr)
+            sys.stdout.write(RESET)
             raise SystemExit
         self.seasons = dict()
         for season in self.show:
@@ -116,8 +117,17 @@ class EpisodeRandomizer:
         just a helper to nicely output result of randomization
         ---
         """
-        result = self.get_random_ep(season=season, episode=episode,
-                                    extras=extras)
+        try:
+            result = self.get_random_ep(season=season, episode=episode,
+                                        extras=extras)
+        except ValueError:
+            try:
+                result = self.get_random_ep(season=season, episode=episode,
+                                            extras=[])
+            except ValueError:
+                sys.stdout.write(BOLD+RED)
+                print("ERR: ", file=sys.stderr)
+                sys.stdout.write(RESET)
         epobj = self.show[result[0]][result[1]]
         # print("The Random Generator says:")
         print("Season {:d} Episode {:d} of {}".format(*result,
