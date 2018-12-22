@@ -27,15 +27,16 @@
 Install the requisite package(s)
 
 
-    python3 -m pip install --upgrade [--user] tvdb_api argparse requests
+    python3 -m pip install --upgrade [--user] -r requirements.txt
 
 Obtain `epgen.py`
 
     git clone the/URL/of/this/repository.git
     cd epgen
 
-#### pyPI:
-coming soon
+#### PyPI direct installation:
+[![Generic badge](https://img.shields.io/badge/coming-soon-purple.svg
+    )](https://github.com/aalok-sathe/epgen#future-features-and-bugfixes)
 
 ### Usage
 
