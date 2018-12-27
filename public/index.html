@@ -1,0 +1,170 @@
+<meta charset="utf-8" />
+<html>
+<head>
+
+    <title>
+        epgen
+    </title>
+
+<style>
+@import url('https://fonts.googleapis.com/css?family=Roboto|Ubuntu');
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+<style>
+    body {
+        background: white;
+        font-family: 'Ubuntu', sans-serif; }
+    section {
+        /* background: black; */
+        /* color: white; */
+        border-radius: 1em;
+        padding: 1em;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%) }
+        * { box-sizing:border-box; }
+</style>
+
+<script type="text/javascript" src="https://cdn.rawgit.com/brython-dev/brython/3.6.2/www/src/brython.js">
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.rawgit.com/brython-dev/brython/3.6.2/www/src/brython_stdlib.js">
+</script>
+
+</head>
+
+<body onLoad="brython(1)">
+
+<!-- <section> -->
+<div class="mdl-card-wide mdl-shadow--4dp">
+
+    <div class="mdl-card__title mdl-card--expand">
+        <h class="mdl-card__title-text">epgen</h>
+    </div>
+    <div class="mdl-card__supporting-text">
+        <h4>
+            A random episode generator for your favorite binge-watching show
+        </h4>
+    </div>
+
+    <form action="#" class="mdl-card__supporting-text" id="form">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield">
+        <input class="mdl-textfield__input" type="text" id="show_name" required>
+        <label class="mdl-textfield__label" for="show_name">
+            <i class="material-icons">search</i>
+            <div class="mdl-layout-spacer"></div>
+            Name of the show</label>
+      </div>
+    <!-- </form> -->
+    <div class="mdl-layout-spacer"></div>
+    <!-- <form action="#" class="mdl-card__supporting-text"on> -->
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(,[0-9]+)*?" id="season_nums">
+        <label class="mdl-textfield__label" for="season_nums">Allowed season numbers (default: empty)</label>
+        <span class="mdl-textfield__error">Error: comma-separated list of season numbers required (e.g.: 1,3,4)</span>
+      </div>
+    <!-- </form> -->
+    <div class="mdl-layout-spacer"></div>
+    <!-- <form action="#" class="mdl-card__supporting-text"on> -->
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(,[0-9]+)*?" id="episode_nums">
+        <label class="mdl-textfield__label" for="episode_nums">Allowed episode numbers (default: empty)</label>
+        <span class="mdl-textfield__error">>Error: comma-separated list of episode numbers required (e.g.: 9,10)</span>
+      </div>
+    </form>
+
+    <div class="mdl-card__actions">
+        <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="extras-switch">
+          <input type="checkbox" id="extras-switch" class="mdl-switch__input">
+          <span class="mdl-switch__label">Include extras and bloopers season if any</span>
+        </label>
+        <div class="mdl-layout-spacer"></div>
+        <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="description-switch">
+          <input type="checkbox" id="description-switch" class="mdl-switch__input">
+          <span class="mdl-switch__label">Show episode description</span>
+        </label>
+        <div class="mdl-layout-spacer"></div>
+        <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="unweighted-switch">
+          <input type="checkbox" id="unweighted-switch" class="mdl-switch__input">
+          <span class="mdl-switch__label">Make choice unweighted (independent of #episodes per season)</span>
+        </label>
+    </div>
+    <div class="mdl-card__actions">
+        <div class="mdl-layout-spacer"></div>
+        <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-shadow--2dp" id="get_random">
+          Get random
+          <!-- <i class="material-icons">search</i> -->
+        </button>
+
+        <button id="demo-show-toast" class="mdl-button mdl-js-button mdl-button--raised" type="button">Usage instructions</button>
+        <div id="demo-toast-example" class="mdl-js-snackbar mdl-snackbar">
+          <div class="mdl-snackbar__text"></div>
+          <button class="mdl-snackbar__action" type="button"></button>
+        </div>
+        <script>
+        (function() {
+          'use strict';
+          window['counter'] = 0;
+          var snackbarContainer = document.querySelector('#demo-toast-example');
+          var showToastButton = document.querySelector('#demo-show-toast');
+          showToastButton.addEventListener('click', function() {
+            'use strict';
+            var data = {
+                message: `
+                - name_of_show (required): the approximate name of show to
+                look up in the database.\t
+
+                - SEASONS (optional): a comma-separated list of season
+                numbers to randomly choose from.
+
+                - EPISODES (optional): a comma-separated list of
+                integers representing particular episode numbers to randomly
+                choose from.
+
+                - include-extras (optional): whether to include a season 0 in the random selection, i.e., most commonly, the season of bloopers or extras footage.
+
+                - description (optional): display a brief summary of the episode that was chosen.
+
+                - unweighted-choice (optional): randomizes season irrespective of how many episodes each season has.
+                `,
+                timeout: 7000
+            };
+            snackbarContainer.MaterialSnackbar.showSnackbar(data);
+          });
+        }());
+        </script>
+
+        <div id="result-toast" class="mdl-js-snackbar mdl-snackbar">
+          <div class="mdl-snackbar__text"></div>
+          <button class="mdl-snackbar__action" type="button"></button>
+        </div>
+
+    </div>
+
+</div>
+
+<script type="text/python">
+from browser import document, window
+jq = window.jQuery
+
+# import tvdb_api
+# import epgen
+
+def main(ev=None):
+    name = jq('#show_name')
+
+    print("INFO: inside main")
+
+    # randomizer = epgen.EpisodeRandomizer(' '.join(name))
+
+
+jq('#get_random').click(main)
+
+</script>
+
+</body>
+</html>
