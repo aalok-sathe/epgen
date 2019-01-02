@@ -1,0 +1,18 @@
+stages:
+    - deploy
+    - webapp
+
+deploy:
+    stage: deploy
+    script:
+        - echo "nothing to do here yet"
+
+pages:
+    stage: webapp
+    script:
+        - echo "uploading to gitlab pages"
+    artifacts:
+        paths:
+            - public
+    only:
+        - webapp
