@@ -3,6 +3,7 @@ stages:
     - webapp
 
 deploy:
+    image: alpine:latest
     stage: deploy
     script:
         - echo "nothing to do here yet"
