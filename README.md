@@ -40,11 +40,18 @@ Obtain `epgen.py`
 
 ### Usage
 
+#### Basic
+
+    $   python3 epgen.py game of thrones
+    ::  Season 4 Episode 10  of Game of Thrones : 'The Children'
+
+#### Advanced
+
     $ python3 epgen.py name_of_show [-s SEASONS] [-e EPISODES] [-h] [-i] [-d] [-u]
 
 - `name_of_show` (required): the approximate name of show to
 look up in the database.
-    * example: `python3 epgen.py [...]`
+    * example: `python3 epgen.py name_of_show`
 - `-s`, `--seasons` `SEASONS` (optional): a whitespace-separated list of season
 numbers to randomly choose from
     * example: `python3 epgen.py [...] -s 4 8 9`
@@ -57,7 +64,7 @@ choose from
 random selection, i.e., most commonly, the season of bloopers or extras footage
 - `-d`, `--description` (optional): display a brief summary of the episode that
 was chosen
-- `u`, `--unweighted-choice` (optional): randomizes season irrespective of how
+- `-u`, `--unweighted-choice` (optional): randomizes season irrespective of how
 many episodes each season has
 
 Examples of usage:
@@ -87,3 +94,6 @@ Examples of usage:
 - [x] Pass list of seasons as argument to select episodes from
 - [x] Weigh random choice by the number of episodes in each season
     - [x] Allow option to unweigh
+
+### Known issues
+- [may not be fixed] seems to not work over VPN (something goes wrong on tvdb_api's end, not ours)
