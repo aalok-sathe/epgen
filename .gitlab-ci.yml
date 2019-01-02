@@ -5,11 +5,9 @@ stages:
 deploy:
     stage: deploy
     script:
-        - echo "nothing to do"
+        - echo "nothing to do here yet"
 
 pages:
     stage: webapp
-    before_script:
-        - git clone https://github.com/dbr/tvdb_api.git
-        - cp tvdb_api/* public/
-        - cp ../epgen.py public/
+    script:
+        - echo "uploading to gitlab pages"
